@@ -1,7 +1,8 @@
 var webpack = require('webpack');
 module.exports = {
+  target: 'electron',
   entry: {
-  app: ['webpack/hot/dev-server', './javascripts/entry.js'],
+  app: ['webpack/hot/dev-server', './javascripts/entry.js']  
 },
 output: {
   path: './public/built',
@@ -25,5 +26,5 @@ module: {
 },
  plugins: [
    new webpack.HotModuleReplacementPlugin()
- ]
+ ] 
 }
