@@ -1,10 +1,1 @@
-[
-    {
-        "id": 1,
-        "text": "I'd like to send email about tasks for tomorrow."
-    },
-    {
-        "id": 2,
-        "text": "I'd like to create new task in TFS."
-    }
-]
+[{"id":1,"text":"I'd like to send email about tasks for tomorrow."},{"id":2,"text":"I'd like to create new tasks in TFS."},{"id":3,"text":"I'd like to check I used correct word."}]
