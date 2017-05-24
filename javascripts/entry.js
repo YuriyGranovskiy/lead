@@ -14,68 +14,109 @@ function readNotesFromFile() {
     return JSON.parse(data);
 };
 
+function makeId() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 11; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 class NoteList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             editable: null,
+            templateEditable: false,
             items: readNotesFromFile()
         };
     };
 
     saveNotes(id, value) {
         let data = readNotesFromFile();
-        data.forEach(function(item, i) {
-            if(item.id === id) {
-                data[i] = {"id": id, "text": value}
-            }
-        });
+        if (id == null) {
+            data.unshift({ "id": makeId(), "text": value })
+        }
+        else {
+            data.forEach(function (item, i) {
+                if (item.id === id) {
+                    data[i] = { "id": id, "text": value }
+                }
+            });
+        }
 
         let path = 'notes.json';
         fs.openSync(path, 'r+');
         fs.writeFileSync(path, JSON.stringify(data));
         this.toggleEditing(null);
-        this.state.items = readNotesFromFile();        
+        this.setState({
+            editing: null,
+            templateEditable: false,
+            items: readNotesFromFile()
+        });
     };
 
     toggleEditing(itemId) {
         this.setState({ editing: itemId });
     };
 
-    renderItemOrEditField(item) {
-        if (this.state.editing === item.id) {
-            return (<li style={{ padding: 10 }}
-                key={item.id}
-                className="list-group-item">
-                <input 
-                    id={item.id}
-                    type="text"
-                    defaultValue={item.text}
-                    onBlur={evt => this.saveNotes(item.id, evt.target.value)}>
-                </input>
-                <input 
-                    type="button" 
-                    value="Save"
-                    onClick={this.saveNotes.bind(this, item.id, item.text)}/>
-            </li>);
+    setTemplateEditing() {
+        this.setState({ templateEditable: true });
+    };
+
+    createTemplateItem() {
+        if (this.state.templateEditable) {
+            return (<div
+                className="neutral-note"
+                style={{ padding: 10 }}
+                contentEditable="true"
+                suppressContentEditableWarning="true"
+                onBlur={evt => this.saveNotes(null, evt.target.firstChild.data)}
+            >
+            </div>);
         }
         else {
-            return (<li style={{ padding: 10 }}
+            return (<div
+                className="empty-note"
+                style={{ padding: 10 }}
+                onClick={this.setTemplateEditing.bind(this)}>
+                Enter your notes
+            </div>);
+        }
+    };
+
+    renderItemOrEditField(item) {
+        if (this.state.editing === item.id) {
+            return (<div style={{ padding: 10 }}
+                contentEditable="true"
+                suppressContentEditableWarning="true"
+                key={item.id}
+                className="neutral-note"
+                id={item.id}
+                onBlur={evt => this.saveNotes(item.id, evt.target.firstChild.data)}>
+                {item.text}
+            </div>);
+        }
+        else {
+            return (<div style={{ padding: 10 }}
                 onClick={this.toggleEditing.bind(this, item.id)}
                 key={item.id}
-                className="list-group-item">
+                className="neutral-note">
                 {item.text}
-            </li>);
+            </div>);
         }
     };
     render() {
-        return (<ul className="list-group" style={{ listStyleType: "none" }}>{this.state.items.map((item) => {
-            return this.renderItemOrEditField(item);
-        })}</ul>);
+        return (
+            <div>
+                {this.createTemplateItem()}
+                {this.state.items.map((item) => {
+                    return this.renderItemOrEditField(item);
+                })}
+            </div>);
     };
 };
 
-ReactDOM.render(<div className="myDiv"><div style={{ padding: 10 }}>Enter your notes</div>
-    <div id="note-list"></div></div>, document.getElementById('content'));
-
-ReactDOM.render(<NoteList />, document.getElementById('note-list'));
+ReactDOM.render(<NoteList />, document.getElementById('content'));
