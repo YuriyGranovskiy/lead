@@ -42,7 +42,11 @@ class NoteList extends React.Component {
         else {
             data.forEach(function (item, i) {
                 if (item.id === id) {
-                    data[i] = { "id": id, "text": value }
+                    if (value) {
+                        data[i] = { "id": id, "text": value };
+                    } else {
+                        data.splice(i, 1);
+                    }
                 }
             });
         }
@@ -73,7 +77,7 @@ class NoteList extends React.Component {
                 style={{ padding: 10 }}
                 contentEditable="true"
                 suppressContentEditableWarning="true"
-                onBlur={evt => this.saveNotes(null, evt.target.firstChild.data)}
+                onBlur={evt => this.saveNotes(null, evt.target.firstChild ? evt.target.firstChild.data : null)}
             >
             </div>);
         }
@@ -95,7 +99,7 @@ class NoteList extends React.Component {
                 key={item.id}
                 className="neutral-note"
                 id={item.id}
-                onBlur={evt => this.saveNotes(item.id, evt.target.firstChild.data)}>
+                onBlur={evt => this.saveNotes(item.id, evt.target.firstChild ? evt.target.firstChild.data : null)}>
                 {item.text}
             </div>);
         }
