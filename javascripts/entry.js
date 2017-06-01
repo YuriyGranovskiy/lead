@@ -38,13 +38,15 @@ class NoteList extends React.Component {
     saveNotes(id, value) {
         let data = readNotesFromFile();
         if (id == null) {
-            data.unshift({ "id": makeId(), "text": value })
+            if (value) {
+                data.unshift({ "id": makeId(), "text": value, "date": new Date() });
+            }
         }
         else {
             data.forEach(function (item, i) {
                 if (item.id === id) {
                     if (value) {
-                        data[i] = { "id": id, "text": value };
+                        data[i] = { "id": id, "text": value , "date": data[i].date};
                     } else {
                         data.splice(i, 1);
                     }
