@@ -38,7 +38,7 @@ app.on('ready', function () {
     width: 340,
     height: 500,
     title: "Lead",
-    icon: "./icon-resized.png"
+    icon: "./icon-grey.png"
   });
   
   ensureNotesFileExists();
@@ -58,7 +58,7 @@ app.on('ready', function () {
     return false;
   });
 
-  appIcon = new Tray('./icon-resized.png');
+  appIcon = new Tray('./icon-grey.png');
 
   var contextMenu = Menu.buildFromTemplate([
     {
