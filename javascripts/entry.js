@@ -6,9 +6,10 @@ require('fs');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import fs from 'fs';
+import os from 'os';
 
 function readNotesFromFile() {
-    let path = 'notes.json';
+    let path = os.homedir() + '/.lead/notes.json';
     fs.openSync(path, 'r+');
     let data = fs.readFileSync(path);
     return JSON.parse(data);
@@ -51,7 +52,7 @@ class NoteList extends React.Component {
             });
         }
 
-        let path = 'notes.json';
+        let path = os.homedir() + '/.lead/notes.json';
         fs.openSync(path, 'r+');
         fs.writeFileSync(path, JSON.stringify(data));
         this.toggleEditing(null);
@@ -73,7 +74,7 @@ class NoteList extends React.Component {
     createTemplateItem() {
         if (this.state.templateEditable) {
             return (<div
-                className="neutral-note"
+                className="selected-note"
                 style={{ padding: 10 }}
                 contentEditable="true"
                 suppressContentEditableWarning="true"
@@ -84,7 +85,7 @@ class NoteList extends React.Component {
         else {
             return (<div
                 className="empty-note"
-                style={{ padding: 10 }}
+                style={{ margin: 10 }}
                 onClick={this.setTemplateEditing.bind(this)}>
                 Enter your notes
             </div>);
@@ -97,7 +98,7 @@ class NoteList extends React.Component {
                 contentEditable="true"
                 suppressContentEditableWarning="true"
                 key={item.id}
-                className="neutral-note"
+                className="selected-note"
                 id={item.id}
                 onBlur={evt => this.saveNotes(item.id, evt.target.firstChild ? evt.target.firstChild.data : null)}>
                 {item.text}

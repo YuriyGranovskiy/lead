@@ -1,3 +1,4 @@
+@selected-bg: #073642;
 @body-bg: #002b36;
 @neutral-note-fg: #839496;
 @empty-note-fg: #586e75;
@@ -6,9 +7,14 @@ body {
 }
 div.neutral-note {
   color: @neutral-note-fg;
-  padding: 10;
+  margin: 10;
+}
+div.selected-note {
+  color: @neutral-note-fg;
+  background-color: @selected-bg;
+  margin: 10;
 }
 div.empty-note {
   color: @empty-note-fg;
-  padding: 10;
+  margin: 10;
 }
