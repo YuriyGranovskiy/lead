@@ -30,6 +30,9 @@ app.on('window-all-closed', function () {
     app.quit();
   }
 });
+
+var appIcon = null;
+
 app.on('ready', function () {
   mainWindow = new BrowserWindow({
     width: 340,
@@ -55,7 +58,7 @@ app.on('ready', function () {
     return false;
   });
 
-  var appIcon = new Tray('./icon-resized.png');
+  appIcon = new Tray('./icon-resized.png');
 
   var contextMenu = Menu.buildFromTemplate([
     {
