@@ -2,19 +2,42 @@
 @body-bg: #002b36;
 @neutral-note-fg: #839496;
 @empty-note-fg: #586e75;
+@red: #dc322f;
+@yellow: #b58900;
 body {
   background-color: @body-bg;
+  margin: 8px 4px 8px 4px;
 }
 div.neutral-note {
-  color: @neutral-note-fg;
-  margin: 10;
+  color: @neutral-note-fg; 
+}
+div.date-neutral {
+  border-color: @neutral-note-fg;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  
+}
+div.date-warn {
+  border-color: @yellow;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  
+}
+div.date-fire {
+  border-color: @red;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
 }
 div.selected-note {
   color: @neutral-note-fg;
-  background-color: @selected-bg;
-  margin: 10;
+  background-color: @selected-bg;  
 }
 div.empty-note {
   color: @empty-note-fg;
-  margin: 10;
 }
+[contenteditable]:focus {
+    outline: 0px solid transparent;
+  }

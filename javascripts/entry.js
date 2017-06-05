@@ -35,6 +35,12 @@ class NoteList extends React.Component {
         };
     };
 
+    componentDidUpdate(prevProps, prevState) {
+        if(this.editebleTamplete) {
+            this.editebleTamplete.focus();
+        }
+    }
+
     saveNotes(id, value) {
         let data = readNotesFromFile();
         if (id == null) {
@@ -70,12 +76,30 @@ class NoteList extends React.Component {
     };
 
     setTemplateEditing() {
-        this.setState({ templateEditable: true });
+        this.setState({ 
+            editing: null,
+            templateEditable: true });
     };
+
+    getBorderClass(date) {
+        var now = new Date();
+        date = date ? new Date(date) : new Date();
+        var diffHours = Math.ceil((now.getTime() - date.getTime())) / (1000 * 3600);
+        if(diffHours < 3) {
+            return "date-neutral"
+        }
+
+        if(diffHours < 12) {
+            return "date-warn"
+        }
+
+        return "date-fire"
+    }
 
     createTemplateItem() {
         if (this.state.templateEditable) {
             return (<div
+                ref={(editebleTamplete) => {this.editebleTamplete = editebleTamplete;}}
                 className="selected-note"
                 style={{ padding: 10 }}
                 contentEditable="true"
@@ -100,7 +124,7 @@ class NoteList extends React.Component {
                 contentEditable="true"
                 suppressContentEditableWarning="true"
                 key={item.id}
-                className="selected-note"
+                className={"selected-note " + this.getBorderClass(item.date)}
                 id={item.id}
                 onBlur={evt => this.saveNotes(item.id, evt.target.firstChild ? evt.target.firstChild.data : null)}>
                 {item.text}
@@ -110,7 +134,7 @@ class NoteList extends React.Component {
             return (<div style={{ padding: 10 }}
                 onClick={this.toggleEditing.bind(this, item.id)}
                 key={item.id}
-                className="neutral-note">
+                className={"neutral-note " + this.getBorderClass(item.date)}>
                 {item.text}
             </div>);
         }

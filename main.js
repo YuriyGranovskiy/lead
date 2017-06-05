@@ -58,7 +58,7 @@ app.on('ready', function () {
     return false;
   });
 
-  appIcon = new Tray('./icon-grey.png');
+  appIcon = new Tray('./icon-yellow.png');
 
   var contextMenu = Menu.buildFromTemplate([
     {
