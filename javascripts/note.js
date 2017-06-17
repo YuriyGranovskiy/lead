@@ -39,7 +39,7 @@ export class Note extends React.Component {
             return (<div style={{ padding: 10 }}
                 onClick={this.props.onClick}
                 key={item.id}
-                className={"neutral-note " + this.getBorderClass(item.date)}>
+                className={"neutral-note " + this.getBorderClassByDate(item.date)}>
                 {item.text}
             </div>);
         }
